@@ -1,690 +1,883 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import {
+  ArrowUpRight,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  ExternalLink,
+  Terminal,
+  Code2,
+  Server,
+  Cloud,
+  Database,
+  Layers3,
+  GitBranch,
+  CheckCircle2,
+  ChevronDown,
+} from "lucide-react";
+
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import ProjectDetailModal from "../PorjectsPage/ProjectDetailModal";
-import "../../App.css";
-import { Backend_Root_Url } from "../../config/AdminUrl.js";
-import {
-  ArrowRight,
-  Download,
-  Code,
-  Eye,
-  Users,
-  Star,
-  ExternalLink,
-  ImageOff,
-} from "lucide-react";
-import styles from "./Home.module.css";
+import "./Home.css";
 
-const Home = () => {
-  const [typedText, setTypedText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [MainHomeData, setMainHomeData] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [cvData, setCvData] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+const projects = [
+  {
+    number: "01",
+    featured: true,
+    title: "Deha Veda",
+    category: "FULL-STACK PLATFORM",
+    description:
+      "A full-stack wellness platform connecting an interactive React frontend with structured FastAPI backend services and authenticated user workflows.",
+    stack: ["React", "FastAPI", "REST API", "Authentication"],
+    architecture: "React → REST API → FastAPI",
+    github: "https://github.com/SarikaSinghh/deha-veda",
+    live: null,
+    accent: "violet",
+  },
+  {
+    number: "02",
+    featured: false,
+    title: "SensAI",
+    category: "AI-POWERED APPLICATION",
+    description:
+      "A modern web application integrating intelligent functionality into a structured product workflow with a focus on usability and application architecture.",
+    stack: ["React", "JavaScript", "AI", "Web"],
+    architecture: "Frontend → Application Logic → AI Services",
+    github: "https://github.com/SarikaSinghh/sensai-project",
+    live: null,
+    accent: "cyan",
+  },
+  {
+    number: "03",
+    featured: false,
+    title: "StudyMate",
+    category: "HACKATHON PROJECT",
+    description:
+      "A student-focused web platform designed to centralize academic workflows through an interactive and responsive application experience.",
+    stack: ["React", "JavaScript", "Web", "UI/UX"],
+    architecture: "Frontend → Application Workflow",
+    github: "https://github.com/SarikaSinghh/StudyMate-Hackathon",
+    live: null,
+    accent: "blue",
+  },
+];
 
-        const homeResponse = await axios.get(
-          `${Backend_Root_Url}/api/home/main/data`
-        );
-        setMainHomeData(homeResponse.data);
 
-        try {
-          const cvResponse = await axios.get(
-            `${Backend_Root_Url}/api/show/cv/`
-          );
-          setCvData(cvResponse.data);
-        } catch (cvError) {
-          console.log(
-            "CV not found (this is normal if no CV is uploaded):",
-            cvError.message
-          );
-          setCvData(null);
-        }
+const stackGroups = [
+  {
+    title: "FRONTEND",
+    icon: <Code2 size={18} />,
+    technologies: [
+      { name: "React", detail: "UI architecture" },
+      { name: "JavaScript", detail: "Application logic" },
+      { name: "HTML / CSS", detail: "Responsive interfaces" },
+    ],
+  },
+  {
+    title: "BACKEND",
+    icon: <Server size={18} />,
+    technologies: [
+      { name: "Node.js", detail: "Server-side runtime" },
+      { name: "FastAPI", detail: "Python REST APIs" },
+      { name: "Express", detail: "Backend services" },
+    ],
+  },
+  {
+    title: "LANGUAGES",
+    icon: <Terminal size={18} />,
+    technologies: [
+      { name: "Java", detail: "DSA & development" },
+      { name: "Python", detail: "Backend & applications" },
+      { name: "SQL", detail: "Data querying" },
+    ],
+  },
+  {
+    title: "CLOUD & TOOLS",
+    icon: <Cloud size={18} />,
+    technologies: [
+      { name: "AWS", detail: "Cloud ecosystem" },
+      { name: "Git / GitHub", detail: "Version control" },
+      { name: "REST APIs", detail: "System integration" },
+    ],
+  },
+];
 
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching home data:", error);
-        setError("Failed to load data. Showing fallback content.");
-        setLoading(false);
 
-        setMainHomeData({
-          DisplayName: "You Need To Complete Setup",
-          description:
-            "You Need To Complete Setup The Backend Or Your DataBase Not Connected",
-          MainRoles: {
-            role1: "Frontend Developer",
-            role2: "Backend Developer",
-            role3: "Full Stack Developer",
-          },
-          Clients_Counting: "NoData",
-          Rateing: "NoData",
-          Stats: [{ StatsNumber: "NoData", StatsLabel: "Backend Issue" }],
-          AboutUs: {
-            AboutUsTitle: "Backend Not Running Or Invalid Database Connection",
-            AboutUsDescription:
-              "No data available. Please follow the installation guide in the GitHub repo or open an issue if you need help. https://github.com/AzizDevX/dynamic-portfolio",
-            AboutSkills: [
-              "Not Found",
-              "Follow Github Guide",
-              "Ask For Help",
-              "Invalid DataBase Connection Url Or Down ??",
-              "AzizKammoun",
-              "AzizDevX",
-            ],
-          },
-          AboutUsSlides: {
-            AboutUsSlides: [
-              {
-                slideTitle: "Backend Not Running",
-                slideDescription:
-                  "No data available. Please follow the installation guide in the GitHub repo or open an issue if you need help.",
-                slideImage: "default-icon.png",
-              },
-              {
-                slideTitle: "Setup Required",
-                slideDescription:
-                  "Your backend is not connected. Check the The Guide On Github for setup instructions.",
-                slideImage: "default-icon.png",
-              },
-              {
-                slideTitle: "Need Assistance?",
-                slideDescription:
-                  "Visit our GitHub issues page to report problems : https://github.com/AzizDevX/dynamic-portfolio/issues or ask for AzizDevX The Owner Of Project For Help.",
-                slideImage: "default-icon.png",
-              },
-            ],
-          },
-          HomeLogo: "default-logo.png",
-          FeaturedProjects: [],
-        });
+const dsaSteps = [
+  {
+    number: "01",
+    title: "UNDERSTAND",
+    description: "Identify constraints, inputs, outputs, and edge cases.",
+  },
+  {
+    number: "02",
+    title: "DRY RUN",
+    description: "Walk through the logic before writing the implementation.",
+  },
+  {
+    number: "03",
+    title: "BRUTE FORCE",
+    description: "Establish a correct baseline before optimizing.",
+  },
+  {
+    number: "04",
+    title: "ANALYZE",
+    description: "Evaluate time and space complexity.",
+  },
+  {
+    number: "05",
+    title: "OPTIMIZE",
+    description: "Improve the approach using the right data structures.",
+  },
+  {
+    number: "06",
+    title: "CLEAN CODE",
+    description: "Produce readable, maintainable, production-minded code.",
+  },
+];
 
-        setCvData(null);
-      }
-    };
 
-    fetchData();
-  }, []);
+const engineeringPrinciples = [
+  "Understand the requirement before choosing the implementation.",
+  "Separate concerns between UI, API, business logic, and data.",
+  "Prefer simple solutions before unnecessary complexity.",
+  "Measure before claiming performance improvements.",
+  "Write code that another engineer can understand and maintain.",
+];
 
-  const GetRoles = MainHomeData?.MainRoles
-    ? Object.values(MainHomeData.MainRoles)
-    : [];
 
-  useEffect(() => {
-    if (!GetRoles || GetRoles.length === 0 || loading) return;
+function Home() {
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
 
-    const currentRole = GetRoles[currentIndex];
-    if (!currentRole || typeof currentRole !== "string") return;
-
-    const typeSpeed = isDeleting ? 50 : 100;
-
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        if (typedText.length < currentRole.length) {
-          setTypedText(currentRole.slice(0, typedText.length + 1));
-        } else {
-          setTimeout(() => setIsDeleting(true), 2000);
-        }
-      } else {
-        if (typedText.length > 0) {
-          setTypedText(currentRole.slice(0, typedText.length - 1));
-        } else {
-          setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % GetRoles.length);
-        }
-      }
-    }, typeSpeed);
-
-    return () => clearTimeout(timeout);
-  }, [typedText, currentIndex, isDeleting, GetRoles, loading]);
-
-  const handleDownloadCV = async () => {
-    if (cvData?.FindCv?.Cv) {
-      setIsDownloading(true);
-      try {
-        const cvUrl = `${Backend_Root_Url}/uploads/mycv/${cvData.FindCv.Cv}`;
-
-        const link = document.createElement("a");
-        link.download = `${MainHomeData?.DisplayName || "CV"}.pdf`;
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        const response = await fetch(cvUrl);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        link.href = url;
-        link.download = `${MainHomeData?.DisplayName || "CV"}.pdf`;
-        link.click();
-        window.URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error("Error downloading CV:", error);
-        window.open(
-          `${Backend_Root_Url}/uploads/mycv/${cvData.FindCv.Cv}`,
-          "_blank"
-        );
-      } finally {
-        setIsDownloading(false);
-      }
-    } else {
-      console.error("CV not available");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   };
 
-  const handleProjectView = (project) => {
-    setSelectedProject(project);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProject(null);
-  };
-
-  const retryFetch = () => {
-    setError(null);
-    window.location.reload();
-  };
-
-  // Show loading state
-  if (loading) {
-    return (
-      <div className={styles.home}>
-        <Navbar />
-        <div className="loading-overlay">
-          <div className="loading-container">
-            <div className="loading-spinner">
-              <div className="spinner-ring"></div>
-            </div>
-            <p className="loading-text">Loading portfolio...</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  const statsArray = MainHomeData?.Stats || [
-    { StatsNumber: "NoData", StatsLabel: "Backend Issue" },
-  ];
-  const aboutUsData = MainHomeData?.AboutUs || {
-    AboutUsTitle: "Backend Not Running Or Invalid Database Connection",
-    AboutUsDescription:
-      "No data available. Please follow the installation guide in the GitHub repo or open an issue if you need help. https://github.com/AzizDevX/dynamic-portfolio",
-  };
-  const aboutUsDataSkills = aboutUsData.AboutSkills || [
-    "Not Found",
-    "Follow Github Guide",
-    "Ask For Help",
-    "Invalid DataBase Connection Url Or Down ??",
-    "AzizKammoun",
-    "AzizDevX",
-  ];
-  const SlidesData = MainHomeData?.AboutUsSlides?.AboutUsSlides || [
-    {
-      slideTitle: "Backend Not Running",
-      slideDescription:
-        "No data available. Please follow the installation guide in the GitHub repo or open an issue if you need help.",
-      slideImage: "default-icon.png",
-    },
-    {
-      slideTitle: "Setup Required",
-      slideDescription:
-        "Your backend is not connected. Check the The Guide On Github for setup instructions.",
-      slideImage: "default-icon.png",
-    },
-    {
-      slideTitle: "Need Assistance?",
-      slideDescription:
-        "Visit our GitHub issues page to report problems : https://github.com/AzizDevX/dynamic-portfolio/issues or ask for AzizDevX The Owner Of Project For Help.",
-      slideImage: "default-icon.png",
-    },
-  ];
-  const SlidesIconsDir = `${Backend_Root_Url}/uploads/aboutimg/`;
-  const HomeLogo = `${Backend_Root_Url}/uploads/logo/` + MainHomeData?.HomeLogo;
-
-  const featuredProjects = (() => {
-    const projects = MainHomeData?.FeaturedProjects || [];
-
-    const validFeaturedProjects = projects.filter(
-      (project) =>
-        project.Featured === true &&
-        project.FeaturedDisplayOrder !== null &&
-        project.FeaturedDisplayOrder !== undefined
-    );
-
-    // Separate valid and invalid projects
-    const projectsWithValidOrder = [];
-    const projectsWithInvalidOrder = [];
-    const usedPositions = new Set();
-
-    validFeaturedProjects.forEach((project) => {
-      const order = project.FeaturedDisplayOrder;
-
-      // Check if order is a valid number and not duplicated
-      if (
-        typeof order === "number" &&
-        order >= 0 &&
-        !usedPositions.has(order)
-      ) {
-        projectsWithValidOrder.push(project);
-        usedPositions.add(order);
-      } else {
-        // Invalid or duplicate order - goes to end
-        console.warn(
-          `Project "${project.Title}" has invalid/duplicate FeaturedDisplayOrder: ${order}`
-        );
-        projectsWithInvalidOrder.push(project);
-      }
-    });
-
-    // Sort valid projects by FeaturedDisplayOrder
-    projectsWithValidOrder.sort(
-      (a, b) => a.FeaturedDisplayOrder - b.FeaturedDisplayOrder
-    );
-
-    // Append invalid projects at the end
-    return [...projectsWithValidOrder, ...projectsWithInvalidOrder];
-  })();
-
-  // Fallback if no featured projects available
-  const displayProjects =
-    featuredProjects.length > 0
-      ? featuredProjects
-      : [
-          {
-            _id: 1,
-            Title: "E-Commerce Platform",
-            ShortDescription:
-              "A full-stack e-commerce solution with React, Node.js, and MongoDB.",
-            Image:
-              "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/ProjectNotFound.png",
-            Project_technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-            ProjectLink: "#",
-          },
-          {
-            _id: 2,
-            Title: "Task Management App",
-            ShortDescription:
-              "A collaborative task management application with real-time updates.",
-            Image:
-              "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/ProjectNotFound.png",
-            Project_technologies: [
-              "React",
-              "Socket.io",
-              "Express",
-              "PostgreSQL",
-            ],
-            ProjectLink: "#",
-          },
-          {
-            _id: 3,
-            Title: "Weather Dashboard",
-            ShortDescription:
-              "A modern weather dashboard with location-based forecasts.",
-            Image:
-              "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/ProjectNotFound.png",
-            Project_technologies: ["Vue.js", "OpenWeather API", "Chart.js"],
-            ProjectLink: "#",
-          },
-        ];
 
   return (
-    <div className={styles.home} id="home">
+    <div className="home-page">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className={styles.hero}>
-        <div className={styles.heroBackground}>
-          <div className={styles.gradientOrb1}></div>
-          <div className={styles.gradientOrb2}></div>
-          <div className={styles.gradientOrb3}></div>
-        </div>
+      {/* =========================================================
+          HERO
+      ========================================================= */}
+      <main>
+        <section className="hero-section" id="home">
+          <div className="hero-grid" />
+          <div className="hero-glow hero-glow-one" />
+          <div className="hero-glow hero-glow-two" />
 
-        <div className={styles.container}>
-          <div className={styles.heroContent}>
-            <div className={styles.heroText}>
-              <div className={styles.greeting}>
-                <span className={styles.wave}>👋</span>
-                <span>Hello, I'm</span>
+          <div className="hero-container">
+            <div className="hero-content">
+
+              <div className="system-label">
+                <span className="status-dot" />
+                <span>SYSTEM STATUS: AVAILABLE</span>
               </div>
 
-              <h1 className={styles.heroTitle}>
-                <span className={styles.name}>
-                  {MainHomeData?.DisplayName || "Developer"}
-                </span>
-                <span className={styles.role}>
-                  {typedText}
-                  <span className={styles.cursor}>|</span>
-                </span>
+              <div className="hero-index">
+                <span>01</span>
+                <span className="index-line" />
+                <span>FULL-STACK DEVELOPER</span>
+              </div>
+
+              <h1 className="hero-title">
+                <span>I BUILD.</span>
+                <span>I LEARN.</span>
+                <span className="hero-title-accent">I SHIP.</span>
               </h1>
 
-              <p className={styles.heroDescription}>
-                <span>
-                  {MainHomeData?.description ||
-                    "Building amazing web experiences"}
-                </span>
+              <p className="hero-description">
+                I'm <strong>Sarika Singh</strong>, a Full-Stack Developer
+                focused on building practical web applications across the
+                frontend, backend, APIs, and cloud ecosystem.
               </p>
 
-              <div className={styles.heroButtons}>
-                <a href="projects" className={styles.primaryButton}>
-                  View My Work
-                  <ArrowRight size={20} />
-                </a>
-
-                {cvData?.FindCv?.Cv ? (
-                  <button
-                    onClick={handleDownloadCV}
-                    className={styles.secondaryButton}
-                    disabled={isDownloading}
-                  >
-                    <Download
-                      size={20}
-                      className={isDownloading ? styles.spinning : ""}
-                    />
-                    {isDownloading ? "Downloading..." : "Download CV"}
-                  </button>
-                ) : (
-                  <button
-                    className={styles.secondaryButton}
-                    disabled
-                    style={{ opacity: 0.6, cursor: "not-allowed" }}
-                  >
-                    <Download size={20} />
-                    Resume Available Soon
-                  </button>
-                )}
+              <div className="hero-stack">
+                <span>MERN</span>
+                <span className="stack-separator">•</span>
+                <span>JAVA</span>
+                <span className="stack-separator">•</span>
+                <span>FASTAPI</span>
+                <span className="stack-separator">•</span>
+                <span>AWS</span>
               </div>
 
-              <div className={styles.socialProof}>
-                <div className={styles.socialProofItem}>
-                  <Users size={20} />
-                  <span>
-                    {MainHomeData?.Clients_Counting || "0"} Happy Clients
+              <div className="hero-actions">
+                <button
+                  className="primary-button"
+                  onClick={() => scrollToSection("work")}
+                >
+                  <span>VIEW MY WORK</span>
+                  <ArrowUpRight size={18} />
+                </button>
+
+                <a
+                  className="secondary-button"
+                  href="https://github.com/SarikaSinghh"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Github size={18} />
+                  <span>GITHUB</span>
+                </a>
+              </div>
+
+              <div className="hero-location">
+                <MapPin size={15} />
+                <span>HYDERABAD, INDIA</span>
+              </div>
+            </div>
+
+
+            {/* SYSTEM PANEL */}
+            <div className="system-panel">
+              <div className="panel-header">
+                <div className="panel-dots">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+
+                <span className="panel-title">sarika-os / terminal</span>
+
+                <Terminal size={15} />
+              </div>
+
+              <div className="terminal-content">
+                <div className="terminal-line">
+                  <span className="terminal-green">sarika@buildlab</span>
+                  <span>:</span>
+                  <span className="terminal-blue">~</span>
+                  <span>$</span>
+                  <span className="terminal-command">whoami</span>
+                </div>
+
+                <div className="terminal-output">
+                  Full-Stack Developer
+                </div>
+
+                <div className="terminal-line">
+                  <span className="terminal-green">sarika@buildlab</span>
+                  <span>:</span>
+                  <span className="terminal-blue">~</span>
+                  <span>$</span>
+                  <span className="terminal-command">stack --current</span>
+                </div>
+
+                <div className="terminal-output terminal-stack-output">
+                  <span>React</span>
+                  <span>Java</span>
+                  <span>FastAPI</span>
+                  <span>AWS</span>
+                </div>
+
+                <div className="terminal-line">
+                  <span className="terminal-green">sarika@buildlab</span>
+                  <span>:</span>
+                  <span className="terminal-blue">~</span>
+                  <span>$</span>
+                  <span className="terminal-command">
+                    status --engineering
                   </span>
                 </div>
-                <div className={styles.socialProofItem}>
-                  <Star size={20} />
-                  <span>{MainHomeData?.Rateing || "5.0"} Rating</span>
+
+                <div className="terminal-status">
+                  <CheckCircle2 size={15} />
+                  <span>READY TO BUILD</span>
+                </div>
+
+                <div className="terminal-cursor">
+                  <span className="cursor-block" />
                 </div>
               </div>
-            </div>
 
-            <div className={styles.heroImage}>
-              <div className={styles.imageContainer}>
-                <img
-                  src={HomeLogo}
-                  alt="Home image"
-                  className={styles.profileImage}
-                  onError={(e) => {
-                    e.target.src =
-                      "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/LogoNotFound.png";
-                  }}
-                />
-                <div className={styles.imageGlow}></div>
+              <div className="panel-footer">
+                <span>BUILD LAB</span>
+                <span>v1.0.0</span>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section className={styles.stats}>
-        <div className={styles.container}>
-          <div className={styles.statsGrid}>
-            {statsArray.map((stat, index) => (
-              <div key={index} className={styles.statItem}>
-                <div className={styles.statNumber}>{stat.StatsNumber}</div>
-                <div className={styles.statLabel}>{stat.StatsLabel}</div>
-              </div>
-            ))}
+          <button
+            className="hero-scroll"
+            onClick={() => scrollToSection("about")}
+            aria-label="Scroll to about section"
+          >
+            <span>SCROLL TO EXPLORE</span>
+            <ChevronDown size={16} />
+          </button>
+        </section>
+
+
+        {/* =========================================================
+            PROOF STRIP
+        ========================================================= */}
+        <section className="proof-section">
+          <div className="section-container proof-grid">
+
+            <div className="proof-item">
+              <span className="proof-value">9.17</span>
+              <span className="proof-label">B.TECH IT CGPA</span>
+            </div>
+
+            <div className="proof-divider" />
+
+            <div className="proof-item">
+              <span className="proof-value">MERN</span>
+              <span className="proof-label">FULL-STACK</span>
+            </div>
+
+            <div className="proof-divider" />
+
+            <div className="proof-item">
+              <span className="proof-value">JAVA</span>
+              <span className="proof-label">DSA & DEVELOPMENT</span>
+            </div>
+
+            <div className="proof-divider" />
+
+            <div className="proof-item">
+              <span className="proof-value">AWS</span>
+              <span className="proof-label">CLOUD ECOSYSTEM</span>
+            </div>
+
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* About Section */}
-      <section className={styles.about}>
-        <div className={styles.container}>
-          <div className={styles.aboutContent}>
-            <div className={styles.aboutText}>
-              <div className={styles.sectionHeader}>
-                <span className={styles.sectionTag}>About Me</span>
-                <h2 className={styles.sectionTitle}>
-                  {aboutUsData.AboutUsTitle}
+
+        {/* =========================================================
+            ABOUT
+        ========================================================= */}
+        <section className="about-section section-dark" id="about">
+          <div className="section-container">
+
+            <div className="section-heading">
+              <div className="section-number">01</div>
+
+              <div>
+                <span className="eyebrow">ABOUT / ENGINEERING</span>
+
+                <h2>
+                  I build systems,
+                  <br />
+                  <span>not just screens.</span>
+                </h2>
+              </div>
+            </div>
+
+
+            <div className="about-grid">
+
+              <div className="about-main">
+                <p className="about-lead">
+                  I'm a Full-Stack Developer focused on building reliable,
+                  user-oriented web applications across the frontend and
+                  backend.
+                </p>
+
+                <p>
+                  I work primarily with React, Node.js, FastAPI, Java, and
+                  modern cloud technologies, with a strong foundation in
+                  data structures and problem-solving.
+                </p>
+
+                <p>
+                  My approach is straightforward: understand the requirement,
+                  break the problem into manageable systems, implement with
+                  clean boundaries, and improve the solution based on evidence.
+                </p>
+              </div>
+
+
+              <div className="about-terminal">
+                <div className="mini-terminal-header">
+                  <span>engineering-principles.txt</span>
+                  <Code2 size={15} />
+                </div>
+
+                <div className="principles-list">
+                  {engineeringPrinciples.map((principle, index) => (
+                    <div className="principle-item" key={principle}>
+                      <span className="principle-number">
+                        0{index + 1}
+                      </span>
+
+                      <span>{principle}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+
+        {/* =========================================================
+            FEATURED WORK
+        ========================================================= */}
+        <section className="work-section section-light" id="work">
+          <div className="section-container">
+
+            <div className="section-heading work-heading">
+              <div className="section-number">02</div>
+
+              <div>
+                <span className="eyebrow">SELECTED WORK</span>
+
+                <h2>
+                  Things I've
+                  <br />
+                  <span>built.</span>
                 </h2>
               </div>
 
-              <p className={styles.aboutDescription}>
-                {aboutUsData.AboutUsDescription}
+              <p className="section-intro">
+                A focused selection of applications demonstrating frontend,
+                backend, API integration, and product-oriented development.
               </p>
-
-              <div className={styles.services}>
-                {SlidesData.map((AboutUsSlide, index) => {
-                  const SlideIcon = SlidesIconsDir + AboutUsSlide.slideImage;
-                  return (
-                    <div key={index} className={styles.serviceItem}>
-                      <div className={styles.serviceIcon}>
-                        <img
-                          src={SlideIcon}
-                          alt={AboutUsSlide.slideTitle}
-                          onError={(e) => {
-                            e.target.src =
-                              "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/LogoNotFound.png";
-                          }}
-                        />
-                      </div>
-                      <div className={styles.serviceContent}>
-                        <h3 className={styles.serviceTitle}>
-                          {AboutUsSlide.slideTitle}
-                        </h3>
-                        <p className={styles.serviceDescription}>
-                          {AboutUsSlide.slideDescription}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
             </div>
 
-            <div className={styles.aboutVisual}>
-              <div className={styles.skillsCloud}>
-                {aboutUsDataSkills.map((skill, index) => {
-                  return (
-                    <div key={index} className={styles.skillBubble}>
-                      {skill}
+
+            <div className="projects-grid">
+
+              {projects.map((project) => (
+                <article
+                  className={`project-card ${
+                    project.featured ? "project-featured" : ""
+                  }`}
+                  key={project.title}
+                >
+
+                  <div className="project-card-top">
+                    <div className="project-number">
+                      {project.number}
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Featured Projects */}
-      <section className={styles.projects}>
-        <div className={styles.container}>
-          <div className={styles.sectionHeader}>
-            <span className={styles.sectionTag}>Featured Work</span>
-            <h2 className={styles.sectionTitle}>Recent Projects</h2>
-          </div>
+                    <span className={`project-accent ${project.accent}`} />
+                  </div>
 
-          <div className={styles.projectsGrid}>
-            {displayProjects.map((project) => (
-              <div key={project._id} className={styles.projectCard}>
-                <div className={styles.projectImage}>
-                  {project.Image &&
-                  project.Image !==
-                    "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/ProjectNotFound.png" &&
-                  project.Image !== "Nothing" ? (
-                    <img
-                      src={`${Backend_Root_Url}/uploads/projectsimg/${project.Image}`}
-                      alt={project.Title}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                      }}
-                      onError={(e) => {
-                        e.target.style.display = "none";
-                        e.target.parentNode.classList.add(
-                          styles.imagePlaceholderActive
-                        );
-                      }}
-                    />
-                  ) : (
-                    <div className={styles.imagePlaceholder}>
-                      <div className={styles.placeholderIcon}>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="48"
-                          height="48"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+
+                  <div className="project-content">
+
+                    <div className="project-category">
+                      {project.category}
+                    </div>
+
+                    <h3>{project.title}</h3>
+
+                    <p>{project.description}</p>
+
+
+                    <div className="project-architecture">
+                      <span>ARCHITECTURE</span>
+
+                      <code>{project.architecture}</code>
+                    </div>
+
+
+                    <div className="project-stack">
+                      {project.stack.map((technology) => (
+                        <span key={technology}>
+                          {technology}
+                        </span>
+                      ))}
+                    </div>
+
+
+                    <div className="project-actions">
+
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-link"
+                      >
+                        <Github size={16} />
+                        <span>SOURCE</span>
+                        <ArrowUpRight size={15} />
+                      </a>
+
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="project-link project-live"
                         >
-                          <line x1="2" x2="22" y1="2" y2="22" />
-                          <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83" />
-                          <line x1="13.5" x2="6" y1="13.5" y2="21" />
-                          <line x1="18" x2="21" y1="12" y2="15" />
-                          <path
-                            d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0
-            1.052-.22 1.41-.59"
-                          />
-                          <path d="M21 15V5a2 2 0 0 0-2-2H9" />
-                        </svg>
-                      </div>
+                          <ExternalLink size={16} />
+                          <span>LIVE</span>
+                        </a>
+                      )}
+
+                    </div>
+
+                  </div>
+                </article>
+              ))}
+
+            </div>
+          </div>
+        </section>
+
+
+        {/* =========================================================
+            ENGINEERING WORKFLOW
+        ========================================================= */}
+        <section className="workflow-section section-dark" id="approach">
+          <div className="section-container">
+
+            <div className="section-heading">
+              <div className="section-number">03</div>
+
+              <div>
+                <span className="eyebrow">PROBLEM SOLVING</span>
+
+                <h2>
+                  How I
+                  <br />
+                  <span>think.</span>
+                </h2>
+              </div>
+            </div>
+
+
+            <div className="workflow-intro">
+              <p>
+                Good engineering isn't just about getting code to run.
+                It's about understanding the problem, validating the approach,
+                and making deliberate trade-offs.
+              </p>
+            </div>
+
+
+            <div className="workflow-grid">
+              {dsaSteps.map((step, index) => (
+                <React.Fragment key={step.number}>
+
+                  <div className="workflow-step">
+
+                    <span className="workflow-number">
+                      {step.number}
+                    </span>
+
+                    <div className="workflow-step-content">
+                      <h3>{step.title}</h3>
+                      <p>{step.description}</p>
+                    </div>
+
+                  </div>
+
+                  {index < dsaSteps.length - 1 && (
+                    <div className="workflow-arrow">
+                      →
                     </div>
                   )}
-                  <div className={styles.projectOverlay}>
-                    <div className={styles.projectActions}>
-                      <button
-                        onClick={() => handleProjectView(project)}
-                        className={styles.projectAction}
-                        title="View Details"
-                      >
-                        <Eye size={20} />
-                      </button>
-                      {project.ProjectLiveUrl &&
-                        project.ProjectLiveUrl.trim() !== "" && (
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={project.ProjectLiveUrl}
-                            className={styles.projectAction}
-                            title="Live Demo"
-                          >
-                            <ExternalLink size={20} />
-                          </a>
-                        )}
-                    </div>
+
+                </React.Fragment>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* =========================================================
+            STACK
+        ========================================================= */}
+        <section className="stack-section section-light" id="stack">
+          <div className="section-container">
+
+            <div className="section-heading">
+              <div className="section-number">04</div>
+
+              <div>
+                <span className="eyebrow">TECHNICAL STACK</span>
+
+                <h2>
+                  Tools I use
+                  <br />
+                  <span>to build.</span>
+                </h2>
+              </div>
+            </div>
+
+
+            <div className="stack-grid">
+
+              {stackGroups.map((group) => (
+                <div className="stack-group" key={group.title}>
+
+                  <div className="stack-group-header">
+                    <span className="stack-icon">
+                      {group.icon}
+                    </span>
+
+                    <span>{group.title}</span>
                   </div>
-                </div>
 
-                <div className={styles.projectContent}>
-                  <h3 className={styles.projectTitle}>{project.Title}</h3>
-                  <p className={styles.projectDescription}>
-                    {project.ShortDescription}
-                  </p>
 
-                  <div className={styles.projectTech}>
-                    {project.Project_technologies.map((tech, index) => (
-                      <span key={index} className={styles.techTag}>
-                        {tech}
-                      </span>
+                  <div className="stack-items">
+                    {group.technologies.map((technology) => (
+                      <div
+                        className="stack-item"
+                        key={technology.name}
+                      >
+                        <span className="stack-item-name">
+                          {technology.name}
+                        </span>
+
+                        <span className="stack-item-detail">
+                          {technology.detail}
+                        </span>
+                      </div>
                     ))}
                   </div>
+
                 </div>
+              ))}
+
+            </div>
+          </div>
+        </section>
+
+
+        {/* =========================================================
+            BUILD JOURNEY
+        ========================================================= */}
+        <section className="journey-section section-dark" id="journey">
+          <div className="section-container">
+
+            <div className="section-heading">
+              <div className="section-number">05</div>
+
+              <div>
+                <span className="eyebrow">BUILD JOURNEY</span>
+
+                <h2>
+                  From foundations
+                  <br />
+                  <span>to shipping.</span>
+                </h2>
               </div>
-            ))}
+            </div>
+
+
+            <div className="journey-timeline">
+
+              <div className="journey-line" />
+
+              <div className="journey-item">
+
+                <div className="journey-marker">
+                  <span>01</span>
+                </div>
+
+                <div className="journey-content">
+                  <span className="journey-label">FOUNDATION</span>
+
+                  <h3>B.Tech — Information Technology</h3>
+
+                  <p>
+                    Built a foundation across programming, computer science,
+                    software development, and problem-solving.
+                  </p>
+
+                  <span className="journey-meta">
+                    CGPA 9.17
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div className="journey-item">
+
+                <div className="journey-marker">
+                  <span>02</span>
+                </div>
+
+                <div className="journey-content">
+                  <span className="journey-label">APPLICATION</span>
+
+                  <h3>Full-Stack Projects</h3>
+
+                  <p>
+                    Applied frontend, backend, API, authentication, and
+                    application architecture concepts to complete projects.
+                  </p>
+
+                  <span className="journey-meta">
+                    MERN • FastAPI • REST APIs
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div className="journey-item">
+
+                <div className="journey-marker">
+                  <span>03</span>
+                </div>
+
+                <div className="journey-content">
+                  <span className="journey-label">ENGINEERING</span>
+
+                  <h3>Problem Solving & DSA</h3>
+
+                  <p>
+                    Strengthening algorithmic thinking through structured
+                    problem decomposition, complexity analysis, and Java.
+                  </p>
+
+                  <span className="journey-meta">
+                    JAVA • DSA • COMPLEXITY
+                  </span>
+                </div>
+
+              </div>
+
+
+              <div className="journey-item">
+
+                <div className="journey-marker active">
+                  <span>04</span>
+                </div>
+
+                <div className="journey-content">
+                  <span className="journey-label">NEXT BUILD</span>
+
+                  <h3>Software Engineering</h3>
+
+                  <p>
+                    Building production-oriented experience through real
+                    applications, deployment, collaboration, and continuous
+                    technical improvement.
+                  </p>
+
+                  <span className="journey-meta">
+                    READY TO SHIP
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
           </div>
+        </section>
 
-          <div className={styles.projectsCta}>
-            <a href="projects" className={styles.viewAllButton}>
-              View All Projects
-              <ArrowRight size={20} />
-            </a>
+
+        {/* =========================================================
+            CONTACT
+        ========================================================= */}
+        <section className="contact-section section-light" id="contact">
+          <div className="section-container">
+
+            <div className="contact-card">
+
+              <div className="contact-grid-pattern" />
+
+              <div className="contact-content">
+
+                <span className="eyebrow">
+                  06 / CONTACT
+                </span>
+
+                <h2>
+                  Let's build
+                  <br />
+                  <span>something useful.</span>
+                </h2>
+
+                <p>
+                  I'm open to software engineering and full-stack development
+                  opportunities where I can contribute to real products and
+                  continue growing as an engineer.
+                </p>
+
+
+                <div className="contact-actions">
+
+                  <a
+                    href="mailto:sarikasingh0846@gmail.com"
+                    className="contact-primary"
+                  >
+                    <Mail size={18} />
+                    <span>GET IN TOUCH</span>
+                    <ArrowUpRight size={17} />
+                  </a>
+
+                  <a
+                    href="https://github.com/SarikaSinghh"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="contact-secondary"
+                  >
+                    <Github size={18} />
+                    <span>GITHUB</span>
+                  </a>
+
+                  <a
+                    href="https://www.linkedin.com/in/sarikasingh2"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="contact-secondary"
+                  >
+                    <Linkedin size={18} />
+                    <span>LINKEDIN</span>
+                  </a>
+
+                </div>
+
+              </div>
+
+
+              <div className="contact-status">
+
+                <div className="contact-status-header">
+                  <span className="status-dot" />
+                  <span>AVAILABILITY</span>
+                </div>
+
+                <div className="contact-status-main">
+                  <strong>OPEN TO OPPORTUNITIES</strong>
+
+                  <span>
+                    Software Engineering
+                    <br />
+                    Full-Stack Development
+                  </span>
+                </div>
+
+                <div className="contact-status-footer">
+                  <span>HYDERABAD / REMOTE</span>
+                  <span>INDIA</span>
+                </div>
+
+              </div>
+
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Show error message if API failed but we have fallback content */}
-      {error && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            background: "rgba(239, 68, 68, 0.9)",
-            color: "white",
-            padding: "12px 16px",
-            borderRadius: "8px",
-            fontSize: "14px",
-            maxWidth: "300px",
-            zIndex: 1000,
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          }}
-        >
-          {error}
-          <button
-            onClick={retryFetch}
-            style={{
-              marginLeft: "12px",
-              background: "white",
-              color: "#ef4444",
-              border: "none",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
-              cursor: "pointer",
-            }}
-          >
-            Retry
-          </button>
-        </div>
-      )}
+      </main>
 
-      {/* Project Detail Modal */}
-      {selectedProject && (
-        <ProjectDetailModal
-          project={{
-            ...selectedProject,
-            title: selectedProject.Title,
-            shortDescription: selectedProject.ShortDescription,
-            description:
-              selectedProject.Description || selectedProject.ShortDescription,
-            image:
-              selectedProject.Image &&
-              selectedProject.Image !==
-                "https://raw.githubusercontent.com/AzizDevX/dynamic-portfolio/main/public/notfound/ProjectNotFound.png"
-                ? `${Backend_Root_Url}/uploads/projectsimg/${selectedProject.Image}`
-                : null,
-            technologies: selectedProject.Project_technologies || [],
-            status: selectedProject.Status,
-            demoUrl: selectedProject.ProjectLiveUrl,
-            featured: selectedProject.Featured || false,
-          }}
-          onClose={handleCloseModal}
-        />
-      )}
 
+      {/* =========================================================
+          FOOTER
+      ========================================================= */}
       <Footer />
     </div>
   );
-};
+}
 
 export default Home;
